@@ -1,0 +1,25 @@
+diff --git a/onlinejudge/service/atcoder.py b/onlinejudge/service/atcoder.py
+index d039a41..66c50ff 100644
+--- a/onlinejudge/service/atcoder.py
++++ b/onlinejudge/service/atcoder.py
+@@ -533,11 +533,19 @@ class AtCoderProblemData(ProblemData):
+         name = tds[1].text
+         if tds[2].text.endswith(' msec'):
+             time_limit_msec = int(utils.remove_suffix(tds[2].text, ' msec'))
++        elif tds[2].text.endswith(' ms'):
++            time_limit_msec = int(utils.remove_suffix(tds[2].text, ' ms'))
+         elif tds[2].text.endswith(' sec'):
+             time_limit_msec = int(float(utils.remove_suffix(tds[2].text, ' sec')) * 1000)
++        elif tds[2].text.endswith(' s'):
++            time_limit_msec = int(float(utils.remove_suffix(tds[2].text, ' s')) * 1000)
+         else:
+             assert False
+-        if tds[3].text.endswith(' KB'):
++        if tds[3].text.endswith(' KiB'):
++            memory_limit_byte = int(float(utils.remove_suffix(tds[3].text, ' KiB')) * 1024)
++        elif tds[3].text.endswith(' MiB'):
++            memory_limit_byte = int(float(utils.remove_suffix(tds[3].text, ' MiB')) * 1024 * 1024)
++        elif tds[3].text.endswith(' KB'):
+             memory_limit_byte = int(float(utils.remove_suffix(tds[3].text, ' KB')) * 1000)
+         elif tds[3].text.endswith(' MB'):
+             memory_limit_byte = int(float(utils.remove_suffix(tds[3].text, ' MB')) * 1000 * 1000)  # TODO: confirm this is MB truly, not MiB
