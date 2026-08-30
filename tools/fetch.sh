@@ -49,4 +49,4 @@ while IFS=$'\t' read -r alphabet purl; do
   count=$((count + 1))
 done < <(jq -r '.result.problems[] | [.context.alphabet, .url] | @tsv' <<< "$json")
 
-echo "done: $count donwloaded"
+echo "done: $count downloaded"

@@ -82,7 +82,7 @@
               echo "../../cplib-rs is not found:"
               echo "  git clone git@github.com:chiaoicchi/cplib-rs.git ~/src/cplib-rs"
             fi
-            echo "atcoder environment"
+            echo "${site} environment"
             echo "  rust: $(rustc --version)"
           '';
         };
