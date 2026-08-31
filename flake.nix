@@ -78,6 +78,8 @@
         runtimeInputs = [
           pkgs.git
           pkgs.coreutils
+          pkgs.gnused
+          pkgs.rustfmt
           bundleRs
           pkgs.wl-clipboard
         ];
