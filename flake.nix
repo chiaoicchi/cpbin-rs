@@ -61,12 +61,37 @@
         ];
         text = builtins.readFile ./tools/ck.sh;
       };
+      bundleToolchain = pkgs.rust-bin.fromRustupToolchainFile ./tools/bundle-rs/rust-toolchain.toml;
+      bundleRs =
+        (pkgs.makeRustPlatform {
+          cargo = bundleToolchain;
+          rustc = bundleToolchain;
+        }).buildRustPackage
+          {
+            pname = "bundle-rs";
+            version = "0.1.0";
+            src = ./tools/bundle-rs;
+            cargoLock.lockFile = ./tools/bundle-rs/Cargo.lock;
+          };
+      bdTool = pkgs.writeShellApplication {
+        name = "bd";
+        runtimeInputs = [
+          pkgs.git
+          pkgs.coreutils
+          pkgs.gnused
+          pkgs.rustfmt
+          bundleRs
+          pkgs.wl-clipboard
+        ];
+        text = builtins.readFile ./tools/bd.sh;
+      };
 
       commonPackages = [
         pkgs.online-judge-tools
         newTool
         fetchTool
         ckTool
+        bdTool
       ];
 
       mkSiteShell =
@@ -92,10 +117,21 @@
         new = newTool;
         fetch = fetchTool;
         ck = ckTool;
+        bd = bdTool;
+        bundle-rs = bundleRs;
       };
 
       devShells.${system} = {
         atcoder = mkSiteShell "atcoder";
+
+        bundle-rs = pkgs.mkShell {
+          packages = [ bundleToolchain ];
+
+          shellHook = ''
+            echo "bundle-rs environment"
+            echo "  rust: $(rustc --version)"
+          '';
+        };
       };
     };
 }
