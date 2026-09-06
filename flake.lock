@@ -1,5 +1,28 @@
 {
   "nodes": {
+    "bundle-rs": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": [
+          "rust-overlay"
+        ]
+      },
+      "locked": {
+        "lastModified": 1788699247,
+        "narHash": "sha256-rqyvas3UGQ6uxQO7sAOMfoZBkpFRMuaKONx5uYV39X4=",
+        "owner": "chiaoicchi",
+        "repo": "bundle-rs",
+        "rev": "12d356194b8461e62ac853590a30874fc309f080",
+        "type": "github"
+      },
+      "original": {
+        "owner": "chiaoicchi",
+        "repo": "bundle-rs",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1787900134,
@@ -18,6 +41,7 @@
     },
     "root": {
       "inputs": {
+        "bundle-rs": "bundle-rs",
         "nixpkgs": "nixpkgs",
         "rust-overlay": "rust-overlay"
       }
