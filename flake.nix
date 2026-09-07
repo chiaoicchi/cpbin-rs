@@ -7,6 +7,11 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    bundle-rs = {
+      url = "github:chiaoicchi/bundle-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.rust-overlay.follows = "rust-overlay";
+    };
   };
 
   outputs =
@@ -14,6 +19,7 @@
       self,
       nixpkgs,
       rust-overlay,
+      bundle-rs,
     }:
     let
       system = "x86_64-linux";
@@ -61,30 +67,7 @@
         ];
         text = builtins.readFile ./tools/ck.sh;
       };
-      bundleToolchain = pkgs.rust-bin.fromRustupToolchainFile ./tools/bundle-rs/rust-toolchain.toml;
-      bundleRs =
-        (pkgs.makeRustPlatform {
-          cargo = bundleToolchain;
-          rustc = bundleToolchain;
-        }).buildRustPackage
-          {
-            pname = "bundle-rs";
-            version = "0.1.0";
-            src = ./tools/bundle-rs;
-            cargoLock.lockFile = ./tools/bundle-rs/Cargo.lock;
-          };
-      bdTool = pkgs.writeShellApplication {
-        name = "bd";
-        runtimeInputs = [
-          pkgs.git
-          pkgs.coreutils
-          pkgs.gnused
-          pkgs.rustfmt
-          bundleRs
-          pkgs.wl-clipboard
-        ];
-        text = builtins.readFile ./tools/bd.sh;
-      };
+      bdTool = bundle-rs.packages.${system}.bd;
 
       commonPackages = [
         pkgs.online-judge-tools
@@ -103,12 +86,16 @@
           ++ commonPackages;
 
           shellHook = ''
-            if [ ! -d ../../cplib-rs ]; then
-              echo "../../cplib-rs is not found:"
+            root="$(git rev-parse --show-toplevel)"
+            export CPLIB_ROOT="''${CPLIB_ROOT:-$root/../cplib-rs}"
+            if [ ! -f "$CPLIB_ROOT/Cargo.toml" ]; then
+              echo "warning: cplib-rs not found at $CPLIB_ROOT"
               echo "  git clone git@github.com:chiaoicchi/cplib-rs.git ~/src/cplib-rs"
+              echo "  or set CPLIB_ROOT"
             fi
             echo "${site} environment"
             echo "  rust: $(rustc --version)"
+            echo "  cplib: $CPLIB_ROOT"
           '';
         };
     in
@@ -117,21 +104,10 @@
         new = newTool;
         fetch = fetchTool;
         ck = ckTool;
-        bd = bdTool;
-        bundle-rs = bundleRs;
       };
 
       devShells.${system} = {
         atcoder = mkSiteShell "atcoder";
-
-        bundle-rs = pkgs.mkShell {
-          packages = [ bundleToolchain ];
-
-          shellHook = ''
-            echo "bundle-rs environment"
-            echo "  rust: $(rustc --version)"
-          '';
-        };
       };
     };
 }
