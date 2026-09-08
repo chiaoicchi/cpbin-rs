@@ -12,6 +12,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "atcoder-abc213"
+version = "0.1.0"
+dependencies = [
+ "cplib",
+ "itertools",
+ "proconio",
+]
+
+[[package]]
 name = "cplib"
 version = "0.1.0"
 
