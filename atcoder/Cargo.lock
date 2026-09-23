@@ -57,12 +57,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "atcoder-arc230"
+name = "atcoder-abc218"
 version = "0.1.0"
 dependencies = [
  "cplib",
  "itertools",
  "proconio",
+ "rand-gen",
 ]
 
 [[package]]
@@ -121,6 +122,10 @@ checksum = "1fbf4db142a473a8d80c26bbf18454ed458bf8d26c8219c331daecfdbd079001"
 dependencies = [
  "proc-macro2",
 ]
+
+[[package]]
+name = "rand-gen"
+version = "0.1.0"
 
 [[package]]
 name = "syn"
