@@ -67,6 +67,23 @@
         ];
         text = builtins.readFile ./tools/ck.sh;
       };
+      stressTool = pkgs.writeShellApplication {
+        name = "stress";
+        runtimeInputs = [
+          pkgs.git
+          pkgs.coreutils
+          pkgs.jq
+        ];
+        text = builtins.readFile ./tools/stress.sh;
+      };
+      snTool = pkgs.writeShellApplication {
+        name = "sn";
+        runtimeInputs = [
+          pkgs.git
+          pkgs.coreutils
+        ];
+        text = builtins.readFile ./tools/sn.sh;
+      };
       bdTool = bundle-rs.packages.${system}.bd;
 
       commonPackages = [
@@ -74,6 +91,8 @@
         newTool
         fetchTool
         ckTool
+        stressTool
+        snTool
         bdTool
       ];
 
@@ -100,12 +119,6 @@
         };
     in
     {
-      packages.${system} = {
-        new = newTool;
-        fetch = fetchTool;
-        ck = ckTool;
-      };
-
       devShells.${system} = {
         atcoder = mkSiteShell "atcoder";
       };
