@@ -2,13 +2,27 @@
 set -euo pipefail
 
 profile="dev"
-if [ "$#" -ge 1 ] && [ "$1" = "-r" ]; then
-  profile="release"
-  shift
-fi
+stress=0
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    -r)
+      profile="release"
+      shift
+      ;;
+    -s)
+      stress=1
+      shift
+      ;;
+    -*)
+      echo "usage: ck [-r] [-s] <problem>" >&2
+      exit 1
+      ;;
+    *) break ;;
+  esac
+done
 
 if [ "$#" -ne 1 ]; then
-  echo "usage: ck [-r] <problem>" >&2
+  echo "usage: ck [-r] [-s] <problem>" >&2
   exit 1
 fi
 
@@ -41,3 +55,12 @@ else
 fi
 
 oj test -c "$bin" -d "testcases/$p"
+
+if [ "$stress" -eq 1 ]; then
+  if [ ! -d "stress/$p" ]; then
+    echo "error: stress/$p not found (run stress first)" >&2
+    exit 1
+  fi
+  echo "--- stress cases"
+  oj test -c "$bin" -d "stress/$p"
+fi
