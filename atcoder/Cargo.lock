@@ -48,6 +48,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "atcoder-abc217"
+version = "0.1.0"
+dependencies = [
+ "cplib",
+ "itertools",
+ "proconio",
+]
+
+[[package]]
+name = "atcoder-arc230"
+version = "0.1.0"
+dependencies = [
+ "cplib",
+ "itertools",
+ "proconio",
+]
+
+[[package]]
 name = "cplib"
 version = "0.1.0"
 
