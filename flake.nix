@@ -76,6 +76,14 @@
         ];
         text = builtins.readFile ./tools/stress.sh;
       };
+      snTool = pkgs.writeShellApplication {
+        name = "sn";
+        runtimeInputs = [
+          pkgs.git
+          pkgs.coreutils
+        ];
+        text = builtins.readFile ./tools/sn.sh;
+      };
       bdTool = bundle-rs.packages.${system}.bd;
 
       commonPackages = [
@@ -84,6 +92,7 @@
         fetchTool
         ckTool
         stressTool
+        snTool
         bdTool
       ];
 
