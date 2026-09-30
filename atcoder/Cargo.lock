@@ -97,6 +97,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "atcoder-abc222"
+version = "0.1.0"
+dependencies = [
+ "cplib",
+ "itertools",
+ "proconio",
+ "rand-gen",
+]
+
+[[package]]
 name = "cplib"
 version = "0.1.0"
 
